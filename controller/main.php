@@ -2,7 +2,9 @@
 class Main{
 	public static function init()
     {
-		View::show("main");
+        $o = new Object("usuario");
+        $o->empresa = 0;
+        echo $o->empresa;
     }
 }
 
