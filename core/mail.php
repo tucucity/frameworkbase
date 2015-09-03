@@ -16,7 +16,12 @@ class Mail {
     private $asunto;
     private $texto;
 
-    public function __construct(){}
+    public function __construct($origen,$destino,$asunto,$body){
+        $this->origen = $origen;
+        $this->destino = $destino;
+        $this->asunto = $asunto;
+        $this->texto = $body;
+    }
     public function __destruct(){}
 
     public function enviar() {
@@ -28,11 +33,20 @@ class Mail {
         //$body = file_get_contents('contenido.html');
         $body = $this->texto;
 
-        $mail->SetFrom($this->origen, 'Nombre completo'); //email y nombre del remitente
+        $mail->IsSMTP();
+        $mail->Host = "smtp.googlemail.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = 'jcaniparoli@cofaral.com.ar';
+        $mail->Password = 'JCaniparoli1053';
 
-        $mail->AddReplyTo($this->origen,"Nombre Completo"); //es bueno dejar la misma dirección que el From, para no caer en spam
+        $mail->SMTPDebug  = 0;
+        $mail->Port       = 465;
+        $mail->SMTPSecure = 'SSL/TLS';
+        $mail->SetFrom($this->origen); //email y nombre del remitente
 
-        $mail->AddAddress($this->destino, "Nombre Destinatario");
+        $mail->AddReplyTo($this->origen); //es bueno dejar la misma dirección que el From, para no caer en spam
+
+        $mail->AddAddress($this->destino);
 
         $mail->Subject = $this->asunto; //"Envío de email Prueba";
 
