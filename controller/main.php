@@ -29,6 +29,7 @@ class Main{
 
         $o = new Object("usuario",1);
         echo $o->apellido;
+        echo "<br>".$o->nombre;
     }
 }
 

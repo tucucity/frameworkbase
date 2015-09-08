@@ -2,6 +2,9 @@
 Class Object
 {
     private $attrib;
+    private $type;
+    private $PK;
+    private $ID = null;
 
     public function __construct($entidad, $id=null)
     {
@@ -14,23 +17,31 @@ Class Object
             if($id!=null)
             {
                 // - ---------------------- Busco el campo Auto Incremental
-                $PK_AutoIncremental = "";
                 foreach($att AS $index=>$value)
                 {
                     if($att[$index]['Extra']=='auto_increment')
                     {
-                        $PK_AutoIncremental = $att[$index]['Field'];
+                        $this->PK = $att[$index]['Field'];
+                        $this->type[$att[$index]['Field']] = $att[$index]['Type'];
+                    }
+                    else
+                    {
+                        $this->type[$att[$index]['Field']] = $att[$index]['Type'];
                     }
                 }
-
                 // - ---------------------- Traigo el campo que corresponde con el id ingresado por el programador
-                $registro = $cnx->consult("SELECT * FROM ".$entidad." WHERE ".$PK_AutoIncremental."=".$id.";");
+                $registro = $cnx->consult("SELECT * FROM ".$entidad." WHERE ".$this->PK."=".$id.";");
 
                 // - ---------------------- Cargo los atributos de la clase
-                foreach($att AS $index=>$value)
+                if(count($registro)>0)
                 {
-                    $this->attrib[$att[$index]['Field']] = $registro[0][$att[$index]['Field']];
+                    foreach($att AS $index=>$value)
+                    {
+                        $this->attrib[$att[$index]['Field']] = $registro[0][$att[$index]['Field']];
+                    }
+                    $this->ID = $id;
                 }
+
             }
             else
             {
