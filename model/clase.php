@@ -8,15 +8,45 @@ Class Object
         $cnx = new Conexion();
         $cnx->open();
         $att = $cnx->consult("DESCRIBE ".$entidad);
-        $cnx->close();
 
         if(!empty($att))
         {
-            foreach($att AS $index=>$value)
+            if($id!=null)
             {
-                $this->attrib[$att[$index]['Field']];
+                // - ---------------------- Busco el campo Auto Incremental
+                $PK_AutoIncremental = "";
+                foreach($att AS $index=>$value)
+                {
+                    if($att[$index]['Extra']=='auto_increment')
+                    {
+                        $PK_AutoIncremental = $att[$index]['Field'];
+                    }
+                }
+
+                // - ---------------------- Traigo el campo que corresponde con el id ingresado por el programador
+                $registro = $cnx->consult("SELECT * FROM ".$entidad." WHERE ".$PK_AutoIncremental."=".$id.";");
+
+                // - ---------------------- Cargo los atributos de la clase
+                foreach($att AS $index=>$value)
+                {
+                    $this->attrib[$att[$index]['Field']] = $registro[0][$att[$index]['Field']];
+                }
+            }
+            else
+            {
+                foreach($att AS $index=>$value)
+                {
+                    $this->attrib[$att[$index]['Field']];
+                }
             }
         }
+        else
+        {
+            echo "La Entidad ".$entidad." No Existe...";
+            $cnx->close();
+            exit();
+        }
+        $cnx->close();
     }
 
     public function __set($name, $value)

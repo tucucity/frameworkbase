@@ -2,7 +2,7 @@
 class Main{
 	public static function init()
     {
-        $o = new Mail();
+        /*$o = new Mail();
         $o->host = "smtp.gmail.com";
         $o->destino = "bautista.luis.88@gmail.com";
         $o->nomOrigen = "Javier Caniparoli";
@@ -25,10 +25,10 @@ class Main{
             echo $o->error;
         }
 		//View::show("main");
-        echo "<br>";
-        $o = new Object("usuario");
-        $o->empresa = 0;
-        echo $o->empresa;
+        echo "<br>";*/
+
+        $o = new Object("usuario",1);
+        echo $o->apellido;
     }
 }
 
