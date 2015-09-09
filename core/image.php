@@ -32,27 +32,26 @@ Class Imagen
     public static function getImg($ruta,$anchop=0,$altop=0)
     {
         $file = SERVER_ROOT.$ruta;
-        echo (file($file) ? "OK" : "MAL")."<br>";
         $info = new SplFileInfo($file);
         $File_Ext = $info->getExtension();
         $File_Name = $info->getFilename();
         $File_Dir = $info->getPath();
 
-        echo "Extension:".$File_Ext."<br>";
+        /*echo "Extension:".$File_Ext."<br>";
         echo "Nombre:".$File_Name."<br>";
-        echo "Directorio:".$File_Dir."<br>";
+        echo "Directorio:".$File_Dir."<br>";*/
 
         list($anchoO, $altoO) = getimagesize($file);
 
-        echo "AnchoO:".$anchoO."<br>";
-        echo "AltoO:".$altoO."<br>";
+        /*echo "AnchoO:".$anchoO."<br>";
+        echo "AltoO:".$altoO."<br>";*/
 
         if (($anchoO<>$anchop || $altoO<>$altop) && ($anchop<>0 || $altop<>0)) {
             $ancho = ($anchop==0 ? ($altop==0 ? $anchoO : $altop ): $anchop);
             $alto = ($altop==0 ? ($anchop==0 ? $altoO : $anchop ): $altop);
 
-            echo "Ancho:".$ancho."<br>";
-            echo "Alto:".$alto."<br>";
+            /*echo "Ancho:".$ancho."<br>";
+            echo "Alto:".$alto."<br>";*/
 
             $thumb = imagecreatetruecolor($ancho, $alto);
             switch($File_Ext){
@@ -78,9 +77,8 @@ Class Imagen
                 case 'png': $origen = imagecreatefrompng($file); break;
                 default : return 'Tipo de archivo no soportado!';
             }
-            //echo "Origen:".$origen."<br>";
-            $salida = imagepng($origen,null,5,PNG_FILTER_UP);
-            //echo "Salida:".$salida."<br>";
+            $salida = $origen; //imagepng($origen,null,5,PNG_FILTER_UP);
+            //echo "Salida:".$salida."<br><br><br><br><br>";
         }
 
         return $salida;

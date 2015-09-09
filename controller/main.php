@@ -29,9 +29,9 @@ class Main{
 
         header("Content-type: image/jpeg");
 
-        $o = new Object("usuario",1);
+        /*$o = new Object("usuario",1);
         echo $o->apellido;
-        echo "<br>".$o->nombre."<br><br>";
+        echo "<br>".$o->nombre."<br><br>";*/
 
         imagepng(Imagen::getImg("/web/images/logo.png"));
     }
