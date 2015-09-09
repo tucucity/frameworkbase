@@ -31,47 +31,67 @@ Class Imagen
 
     public static function getImg($ruta,$anchop=0,$altop=0)
     {
-        $info = new SplFileInfo($ruta);
+        $file = SERVER_ROOT.$ruta;
+        echo (file($file) ? "OK" : "MAL")."<br>";
+        $info = new SplFileInfo($file);
         $File_Ext = $info->getExtension();
         $File_Name = $info->getFilename();
         $File_Dir = $info->getPath();
 
-        list($anchoO, $altoO) = getimagesize($File_Dir . $File_Name);
+        echo "Extension:".$File_Ext."<br>";
+        echo "Nombre:".$File_Name."<br>";
+        echo "Directorio:".$File_Dir."<br>";
 
-        if ($anchoO<>$anchop || $altoO<>$altop) {
-            $ancho = ($anchop=0 ? ($altop=0 ? $anchoO : $altop ): $anchop);
-            $alto = ($altop=0 ? ($anchop=0 ? $altoO : $anchop ): $altop);
+        list($anchoO, $altoO) = getimagesize($file);
+
+        echo "AnchoO:".$anchoO."<br>";
+        echo "AltoO:".$altoO."<br>";
+
+        if (($anchoO<>$anchop || $altoO<>$altop) && ($anchop<>0 || $altop<>0)) {
+            $ancho = ($anchop==0 ? ($altop==0 ? $anchoO : $altop ): $anchop);
+            $alto = ($altop==0 ? ($anchop==0 ? $altoO : $anchop ): $altop);
+
+            echo "Ancho:".$ancho."<br>";
+            echo "Alto:".$alto."<br>";
 
             $thumb = imagecreatetruecolor($ancho, $alto);
             switch($File_Ext){
-                case '.bmp': $origen = imagecreatefromwbmp($File_Dir . $File_Name); break;
-                case '.gif': $origen = imagecreatefromgif($File_Dir . $File_Name); break;
-                case '.jpg': $origen = imagecreatefromjpeg($File_Dir . $File_Name); break;
-                case '.png': $origen = imagecreatefrompng($File_Dir . $File_Name); break;
-                default : return 'Tipo de archivo no soportado!';
-            }
-            $salida = imagecopyresized($thumb, $origen, 0, 0, 0, 0, $ancho, $alto, $anchoO, $altoO); //Parametros: $dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h
-        }
-        else {
-            switch($File_Ext){
-                case '.bmp': $origen = imagecreatefromwbmp($File_Dir . $File_Name); break;
-                case '.gif': $origen = imagecreatefromgif($File_Dir . $File_Name); break;
-                case '.jpg': $origen = imagecreatefromjpeg($File_Dir . $File_Name); break;
-                case '.png': $origen = imagecreatefrompng($File_Dir . $File_Name); break;
+                case 'bmp': $origen = imagecreatefromwbmp($file); break;
+                case 'gif': $origen = imagecreatefromgif($file); break;
+                case 'jpg': $origen = imagecreatefromjpeg($file); break;
+                case 'png': $origen = imagecreatefrompng($file); break;
                 default : return 'Tipo de archivo no soportado!';
             }
 
+            //imagepng($origen);
+
+            $salida = imagecopyresized($thumb, $origen, 0, 0, 0, 0, $ancho, $alto, $anchoO, $altoO); //Parametros: $dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h
+            //echo "<br><br>";
+            //imagepng($salida);
+
+        }
+        else {
+            switch($File_Ext){
+                case 'bmp': $origen = imagecreatefromwbmp($file); break;
+                case 'gif': $origen = imagecreatefromgif($file); break;
+                case 'jpg': $origen = imagecreatefromjpeg($file); break;
+                case 'png': $origen = imagecreatefrompng($file); break;
+                default : return 'Tipo de archivo no soportado!';
+            }
+            //echo "Origen:".$origen."<br>";
             $salida = imagepng($origen,null,5,PNG_FILTER_UP);
+            //echo "Salida:".$salida."<br>";
         }
 
         return $salida;
 
     }
 
-    public static function upload($input,$folder="web/images/",$nombreImg="")
+    public static function upload($input,$folder="/web/images/",$nombreImg="")
     {
         //$input es el id del input de la vista por ejemplo: <input name="FileInput" id="FileInput" type="file" />
-        $directorio = dir(SERVER_ROOT."/".$folder);
+        $file = SERVER_ROOT.$folder;
+        $directorio = dir(SERVER_ROOT.$folder);
 
         if(isset($_FILES["$input"]) && $_FILES["$input"]["error"]== UPLOAD_ERR_OK)
         {
