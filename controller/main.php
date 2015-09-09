@@ -4,7 +4,7 @@ class Main{
     {
         $o = new Mail();
         $o->host = "smtp.gmail.com";
-        $o->destino = "bautista.luis.88@gmail.com";
+        //$o->destino = "bautista.luis.88@gmail.com";
         $o->nomOrigen = "Javier Caniparoli";
         $o->origen = "jcaniparoli@cofaral.com.ar";
         $o->passw = "JCaniparoli1053";
