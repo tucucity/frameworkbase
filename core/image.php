@@ -31,27 +31,19 @@ Class Imagen
 
     public static function getImg($ruta,$anchop=0,$altop=0)
     {
-        $file = SERVER_ROOT.$ruta;
+        $file = $ruta;
         $info = new SplFileInfo($file);
         $File_Ext = $info->getExtension();
         $File_Name = $info->getFilename();
         $File_Dir = $info->getPath();
 
-        /*echo "Extension:".$File_Ext."<br>";
-        echo "Nombre:".$File_Name."<br>";
-        echo "Directorio:".$File_Dir."<br>";*/
+        header("Content-type: image/".$File_Ext);
 
         list($anchoO, $altoO) = getimagesize($file);
-
-        /*echo "AnchoO:".$anchoO."<br>";
-        echo "AltoO:".$altoO."<br>";*/
 
         if (($anchoO<>$anchop || $altoO<>$altop) && ($anchop<>0 || $altop<>0)) {
             $ancho = ($anchop==0 ? ($altop==0 ? $anchoO : $altop ): $anchop);
             $alto = ($altop==0 ? ($anchop==0 ? $altoO : $anchop ): $altop);
-
-            /*echo "Ancho:".$ancho."<br>";
-            echo "Alto:".$alto."<br>";*/
 
             $thumb = imagecreatetruecolor($ancho, $alto);
             switch($File_Ext){
@@ -62,14 +54,11 @@ Class Imagen
                 default : return 'Tipo de archivo no soportado!';
             }
 
-            //imagepng($origen);
-
-            $salida = imagecopyresized($thumb, $origen, 0, 0, 0, 0, $ancho, $alto, $anchoO, $altoO); //Parametros: $dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h
-            //echo "<br><br>";
-            //imagepng($salida);
+            imagecopyresized($thumb, $origen, 0, 0, 0, 0, $ancho, $alto, $anchoO, $altoO); //Parametros: $dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h
 
         }
         else {
+            $thumb = imagecreatetruecolor($anchoO, $altoO);
             switch($File_Ext){
                 case 'bmp': $origen = imagecreatefromwbmp($file); break;
                 case 'gif': $origen = imagecreatefromgif($file); break;
@@ -77,11 +66,12 @@ Class Imagen
                 case 'png': $origen = imagecreatefrompng($file); break;
                 default : return 'Tipo de archivo no soportado!';
             }
-            $salida = $origen; //imagepng($origen,null,5,PNG_FILTER_UP);
+            imagecopyresized($thumb, $origen, 0, 0, 0, 0, $anchoO, $altoO, $anchoO, $altoO);
+            //$salida = $thumb; //imagepng($origen,null,5,PNG_FILTER_UP);
             //echo "Salida:".$salida."<br><br><br><br><br>";
         }
 
-        return $salida;
+        imagepng($thumb);
 
     }
 
