@@ -1,6 +1,7 @@
 <?php
 Class Object
 {
+    private $table;
     private $attrib;
     private $type;
     private $PK;
@@ -8,6 +9,7 @@ Class Object
 
     public function __construct($entidad, $id=null)
     {
+        $this->table = $entidad;
         $cnx = new Conexion();
         $cnx->open();
         $att = $cnx->consult("DESCRIBE ".$entidad);
@@ -67,7 +69,8 @@ Class Object
 
     public function __get($name)
     {
-        if (array_key_exists($name, $this->attrib)) {
+        if (array_key_exists($name, $this->attrib))
+        {
             return $this->attrib[$name];
         }
         $trace = debug_backtrace();
@@ -77,6 +80,38 @@ Class Object
             ' en la línea ' . $trace[0]['line'],
             E_USER_NOTICE);
         return null;
+    }
+
+    public function save()
+    {
+        $cnx = new Conexion();
+        $cnx->open();
+
+        $_sql = "";
+        if($this->ID!=null)
+        {
+            $insertAtrib = "";
+            $insertValues = "";
+            foreach($this->attrib AS $index=>$value)
+            {
+                //------- Atributo para Insert
+                if($index!=$this->PK)
+                {
+                    ($insertAtrib=="")?($insertAtrib = $index) :($insertAtrib .= ",".$index);
+                    ($insertValues=="")?($insertValues = $this->attrib[$index]) :($insertValues .= ",".$this->attrib[$index]);
+                }
+            }
+
+            $_sql = "INSERT INTO ".$this->table." (".$insertAtrib.") VALUES (".$insertValues.")";
+            echo $_sql;
+            //$this->ID = $cnx->insert_id($_sql);
+        }
+        else
+        {
+            $_sql = "";
+        }
+
+        $cnx->close();
     }
 
 
