@@ -33,6 +33,7 @@ class Main{
         echo $o->apellido;
         echo "<br>".$o->nombre."<br><br>";*/
 
+        View::show("main");
         Imagen::getImg(IMG."logo.png",50,200);
     }
 }

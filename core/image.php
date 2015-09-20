@@ -37,7 +37,13 @@ Class Imagen
         $File_Name = $info->getFilename();
         $File_Dir = $info->getPath();
 
-        header("Content-type: image/".$File_Ext);
+        if (headers_sent()) {
+            // las cabeceras ya se han enviado, no intentar añadir una nueva
+        }
+        else {
+            // es posible añadir nuevas cabeceras HTTP
+            header("Content-type: image/".$File_Ext);
+        }
 
         list($anchoO, $altoO) = getimagesize($file);
 
