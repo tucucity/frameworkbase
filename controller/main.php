@@ -28,7 +28,7 @@ class Main{
         echo "<br>";*/
 
         $o = new Object("prueba",1);
-        echo $o->getNombre." ".$o->getApellido;
+        echo $o->getNombre." ";
 
         //View::show("main");
         //Imagen::getImg(IMG."logo.png",50,200);

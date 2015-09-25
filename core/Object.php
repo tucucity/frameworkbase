@@ -18,7 +18,7 @@ Class Object
             $reflect = new Reflect();
             if($reflect->createClass($this->clase))
             {
-                include_all(SERVER_ROOT."/model/");
+                include_once(SERVER_ROOT."/model/".$this->clase.".php");
                 $this->object = ($id==null)? new $clase() : new $clase($id);
             }
             else
@@ -52,7 +52,7 @@ Class Object
                 }
                 else
                 {
-                    echo "La Metodo ".$method." No Existe en la Clase ".$this->clase."...";
+                    echo "El Metodo ".$method." No Existe en la Clase ".$this->clase."...";
                     exit();
                 }
             }
@@ -76,8 +76,9 @@ Class Object
             $OldObject = $this->object;
             if($reflect->createClass($this->clase))
             {
-                include_all(SERVER_ROOT."/model/");
+                include_once(SERVER_ROOT."/model/".$this->clase.".php");
                 $this->object = ($this->id==null)? new $this->clase() : new $this->clase($this->id);
+
                 $this->object->setAttributesJSON($OldObject->convertToJSON());
 
                 if(method_exists($this->object,$method))
