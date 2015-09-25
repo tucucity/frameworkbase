@@ -27,14 +27,11 @@ class Main{
 		//View::show("main");
         echo "<br>";*/
 
+        $o = new Object("prueba",1);
+        echo $o->getNombre." ".$o->getApellido;
 
-
-        /*$o = new Object("usuario",1);
-        echo $o->apellido;
-        echo "<br>".$o->nombre."<br><br>";*/
-
-        View::show("main");
-        Imagen::getImg(IMG."logo.png",50,200);
+        //View::show("main");
+        //Imagen::getImg(IMG."logo.png",50,200);
     }
 }
 

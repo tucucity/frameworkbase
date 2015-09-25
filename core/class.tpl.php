@@ -89,37 +89,6 @@ Class {Tabla}
         }
     }
 
-    public static function sync($opera)
-    {
-        $param = explode("/", $opera);
-
-        switch ($param[0]) {
-            case 'get':
-                $o = new {Tabla}($param[1]);
-                echo $o->convertToJSON();
-                break;
-
-            case 'save':
-                $o = new {Tabla}();
-                $o->setAttributesJSON(file_get_contents("php://input"));
-                $o->save();
-                echo json_encode(array('status'=>'OK'));
-                break;
-
-            case 'delete':
-                $o = new {Tabla}();
-                $o->setAttributesJSON(file_get_contents("php://input"));
-                $o->delete();
-                echo json_encode(array('status'=>'OK'));
-                break;
-
-            default:
-                echo json_encode(array('status'=>'NO'));
-                break;
-        }
-
-    }
-
     //---|||SimplePHP|||---//
 
 }
@@ -190,69 +159,6 @@ Class Collection{Tabla}
     {
         return $this->count;
     }
-
-    public static function sync($opera)
-    {
-        $param = explode("/", $opera);
-        $filasXpagina = (isset($param[3]) && $param[3]!="")?$param[3]:500;
-        $page = (isset($param[2]) && $param[2]!="")?$param[2]:1;
-
-        $condicion = null;
-        if(isset($param[1]) && $param[1]!="-" && $param[1]!="")
-        {
-            $condicion = str_replace("%20"," ",$param[1]);
-            $condicion = str_replace("%25","%",$condicion);
-            $condicion = str_replace("%22","'",$condicion);
-        }
-
-        $oBB = new Conexion();
-        $oBB->open();
-        $result = $oBB->consult("SELECT count(*) as cantidad FROM {tabla} ".$condicion.";");
-        $oBB->close();
-        $cantPaginas = ceil((int)$result[0]['cantidad']/$filasXpagina);
-
-        $indiceInicio = ((($filasXpagina*$page))-$filasXpagina);
-        $indiceInicio = ($indiceInicio<0)?0:$indiceInicio;
-
-        switch ($param[0])
-        {
-            case 'get':
-
-                $o = new Collection{Tabla}($condicion,$indiceInicio.",".$filasXpagina);
-                if($o->count()>0)
-                {
-                    $json = "[".$o->{tabla}[0]->convertToJSON();
-                    for($i=1;$i<$o->count();$i++)
-                    {
-                        $json = $json.",".$o->{tabla}[$i]->convertToJSON();
-                    }
-                    $json = $json."]";
-
-                    echo $json;
-                }
-                else
-                {
-                    echo "[]";
-                }
-                break;
-
-            case 'countPages':
-
-                echo json_encode(array('countPages'=>$cantPaginas));
-                break;
-
-            default:
-                echo json_encode(array('status'=>'NO'));
-                break;
-        }
-
-
-    }
-
-    /*public function list()
-    {
-        return FTN::toArray($this->list);
-    }*/
 
 }
 ?>
