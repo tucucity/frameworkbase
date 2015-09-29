@@ -42,10 +42,16 @@ Class Object
             $temp = date("YmdHis");
             if($reflect->createClass($this->clase,$temp))
             {
-                unset($this->object);
                 $this->clase = $this->clase.$temp;
                 include_once(SERVER_ROOT."/temp_model/".$this->clase.".php");
-                $this->object = ($this->id==null)? new $this->clase() : new $this->clase($this->id);
+                if($this->id==null)
+                {
+                    $this->object = new $this->clase();
+                }
+                else
+                {
+                    $this->object = new $this->clase($this->id);
+                }
                 $this->object->setAttributesJSON($OldObject->convertToJSON());
 
                 if(method_exists($this->object,$method))
@@ -79,13 +85,17 @@ Class Object
             $temp = date("YmdHis");
             if($reflect->createClass($this->clase,$temp))
             {
-                unset($this->object);
                 $this->clase = $this->clase.$temp;
                 include_once(SERVER_ROOT."/temp_model/".$this->clase.".php");
 
-                echo (class_exists($this->clase))?"La clase existe":"La clase no existe";
-
-                $this->object = ($this->id==null)? new $this->clase() : new $this->clase($this->id);
+                 if($this->id==null)
+                 {
+                     $this->object = new $this->clase();
+                 }
+                 else
+                 {
+                     $this->object = new $this->clase($this->id);
+                 }
 
                 $this->object->setAttributesJSON($OldObject->convertToJSON());
 
@@ -133,6 +143,40 @@ Class Object
     }
 
 
+}
+
+Class CollectionObject
+{
+    private $collection;
+    private $objetos;
+
+    public function __construct($clase, $condicion=null , $limit=null)
+    {
+        $this->collection = "Collection".ucwords($clase);
+        if (class_exists($this->collection))
+        {
+            $this->objetos = new $this->collection($condicion,$limit);
+        }
+        else
+        {
+            $reflect = new Reflect();
+            if ($reflect->createClass($clase))
+            {
+                include_once(SERVER_ROOT . "/model/" . $clase . ".php");
+                $this->objetos = new $this->collection($condicion,$limit);
+            }
+            else
+            {
+                echo "La Tabla " . $clase . " No Existe en la Base de Datos...";
+                exit();
+            }
+        }
+    }
+
+    public function __get($object)
+    {
+        return $this->objetos->$object;
+    }
 }
 
 ?>

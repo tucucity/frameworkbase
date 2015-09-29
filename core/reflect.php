@@ -38,14 +38,11 @@ class Reflect
                     $PK_AutoIncremental = $atrib[$i]['Field'];
                 }
                 // -------- Seters
-                if($atrib[$i]['Extra']!='auto_increment')
-                {
                     $seters = $seters."public function set".ucwords($atrib[$i]['Field'])."($".$atrib[$i]['Field'].")
 		        {
 		            \$this->".$atrib[$i]['Field']." = $".$atrib[$i]['Field'].";
 		        }
 		        ";
-                }
                 // ------- Geters
                 $geters = $geters."public function get".ucwords($atrib[$i]['Field'])."()
 		        {

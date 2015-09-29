@@ -26,11 +26,6 @@ Class {Tabla}
         }
     }
 
-    public function s_{AtributoPK}($id)
-    {
-        $this->{AtributoPK} = $id;
-    }
-
         {seters}
 
         {geters}
@@ -134,11 +129,11 @@ Class Collection{Tabla}
         {
             for($i=0;$i<count($result);$i++)
             {
-                $ob = new {Tabla}(null);
+                $ob = new Object("{tabla}");
                 foreach ( $result[$i] as $campo => $valor )
                 {
                     $MCampo = 'set'.ucwords($campo);
-                    ($campo=='{AtributoPK}')?($ob->s_{AtributoPK}($valor)):($ob->$MCampo($valor));
+                    $ob->$MCampo = $valor;
                 }
                 array_push($this->{tabla},$ob);
             }

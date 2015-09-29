@@ -27,8 +27,14 @@ class Main{
 		//View::show("main");
         echo "<br>";*/
 
-        $o = new Object("prueba",1);
-        echo $o->getNombre." ".$o->getApellido;
+        //$o = new Object("prueba",1);
+        //$o->setApellido = "OTRO";
+        //$o->save();
+        //echo $o->getNombre." ".$o->getApellido;
+
+        $collection = new CollectionObject("prueba");
+        //echo var_dump($collection);
+        echo $collection->prueba[0]->getAt;
 
         //View::show("main");
         //Imagen::getImg(IMG."logo.png",50,200);
