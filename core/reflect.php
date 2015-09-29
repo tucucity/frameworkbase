@@ -1,7 +1,7 @@
 <?php 
 class Reflect
 {
-	public function createClass($tableName)
+	public function createClass($tableName,$temp=null)
     {
 		$dir = SERVER_ROOT."/model/";
 		$maquetaClass = file_get_contents(SERVER_ROOT."/core/class.tpl.php");
@@ -108,6 +108,27 @@ class Reflect
             $file=fopen($dir."\\".$clase.".php","w");
             fwrite($file,$contenido);
             fclose($file);
+
+            if($temp!=null)
+            {
+                $contenido = view::parse($maquetaClass, array(
+                        "Tabla" => ucwords($clase.$temp),
+                        "tabla" => $clase,
+                        "atributos" => $defAtrib,
+                        "AtributoPK" => $PK_AutoIncremental,
+                        "seters" => $seters,
+                        "geters" => $geters,
+                        "INSERT_ATRIB" => $insertAtrib,
+                        "INSERT_VALUES" => $insertValues,
+                        "UPDATE" => $updateValues,
+                        "AttribShow" => $attribShow
+                    )
+                );
+                $dir = SERVER_ROOT."/temp_model/";
+                $file=fopen($dir."\\".$clase.$temp.".php","w");
+                fwrite($file,$contenido);
+                fclose($file);
+            }
 
             return true;
         }
