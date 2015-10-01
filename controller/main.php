@@ -32,9 +32,13 @@ class Main{
         //$o->save();
         //echo $o->getNombre." ".$o->getApellido;
 
-        $collection = new CollectionObject("prueba");
-        //echo var_dump($collection);
-        echo $collection->prueba[0]->getAt;
+        $collection = new CollectionObject("search1");
+        $collection->search1[0]->show();
+
+        foreach($collection->search1 AS $reg)
+        {
+            echo $reg->show()."<br><br>";
+        }
 
         //View::show("main");
         //Imagen::getImg(IMG."logo.png",50,200);

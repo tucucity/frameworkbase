@@ -14,5 +14,6 @@ function include_all($dir){
 include_all(SERVER_ROOT."/core/");
 include_all(SERVER_ROOT."/controller/");
 include_all(SERVER_ROOT."/model/");
+include_once(SERVER_ROOT."/nusoap/nusoap.php");
 
 ?>
