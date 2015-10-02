@@ -121,7 +121,6 @@ class Reflect
                         "AttribShow" => $attribShow
                     )
                 );
-                $dir = SERVER_ROOT."/temp_model/";
                 $file=fopen($dir."\\".$clase.$temp.".php","w");
                 fwrite($file,$contenido);
                 fclose($file);

@@ -43,7 +43,8 @@ Class Object
             if($reflect->createClass($this->clase,$temp))
             {
                 $this->clase = $this->clase.$temp;
-                include_once(SERVER_ROOT."/temp_model/".$this->clase.".php");
+                include_once(SERVER_ROOT."/model/".$this->clase.".php");
+                unlink(SERVER_ROOT."/model/".$this->clase.".php");
                 if($this->id==null)
                 {
                     $this->object = new $this->clase();
@@ -86,8 +87,8 @@ Class Object
             if($reflect->createClass($this->clase,$temp))
             {
                 $this->clase = $this->clase.$temp;
-                include_once(SERVER_ROOT."/temp_model/".$this->clase.".php");
-
+                include_once(SERVER_ROOT."/model/".$this->clase.".php");
+                unlink(SERVER_ROOT."/model/".$this->clase.".php");
                  if($this->id==null)
                  {
                      $this->object = new $this->clase();

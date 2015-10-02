@@ -27,18 +27,10 @@ class Main{
 		//View::show("main");
         echo "<br>";*/
 
-        //$o = new Object("prueba",1);
+        $o = new Object("prueba",1);
         //$o->setApellido = "OTRO";
         //$o->save();
-        //echo $o->getNombre." ".$o->getApellido;
-
-        $collection = new CollectionObject("search1");
-        $collection->search1[0]->show();
-
-        foreach($collection->search1 AS $reg)
-        {
-            echo $reg->show()."<br><br>";
-        }
+        echo $o->getNombre." ".$o->getApellido;
 
         //View::show("main");
         //Imagen::getImg(IMG."logo.png",50,200);
