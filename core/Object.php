@@ -178,6 +178,12 @@ Class CollectionObject
     {
         return $this->objetos->$object;
     }
+
+    public function convertToJSON()
+    {
+        return $this->objetos->convertToJSON();
+    }
+
 }
 
 ?>

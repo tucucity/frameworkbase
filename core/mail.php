@@ -38,7 +38,7 @@ class Mail {
 
     public function enviar() {
 
-        require_once('class.phpmailer.php');
+        //require_once('core/class.phpmailer.php');
 
         $mail = new PHPMailer(); // defaults to using php "mail()"
 

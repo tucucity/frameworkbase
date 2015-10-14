@@ -155,5 +155,10 @@ Class Collection{Tabla}
         return $this->count;
     }
 
+    public function convertToJSON()
+    {
+        return json_encode($this->list);
+    }
+
 }
 ?>
