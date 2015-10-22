@@ -58,7 +58,7 @@ class Reflect
                 //------- Valores para Insert
                 if($atrib[$i]['Extra']!='auto_increment')
                 {
-                    if(strpos($atrib[$i]['Type'],'int') || strpos($atrib[$i]['Type'],'tinyint') || strpos($atrib[$i]['Type'],'smallint') || strpos($atrib[$i]['Type'],'mediumint') || strpos($atrib[$i]['Type'],'bigint') || strpos($atrib[$i]['Type'],'float') || strpos($atrib[$i]['Type'],'decimal'))
+                    if(strpos($atrib[$i]['Type'],'int')!== FALSE || strpos($atrib[$i]['Type'],'tinyint')!== FALSE || strpos($atrib[$i]['Type'],'smallint')!== FALSE || strpos($atrib[$i]['Type'],'mediumint')!== FALSE || strpos($atrib[$i]['Type'],'bigint')!== FALSE || strpos($atrib[$i]['Type'],'float')!== FALSE || strpos($atrib[$i]['Type'],'decimal')!== FALSE)
                     {
                         ($insertValues=="")?($insertValues = "\$this->".$atrib[$i]['Field']):($insertValues = $insertValues.",\$this->".$atrib[$i]['Field']);
                     }
@@ -72,7 +72,7 @@ class Reflect
                 //-------------- valores para UPDATE
                 if($atrib[$i]['Extra']!='auto_increment')
                 {
-                    if(strpos($atrib[$i]['Type'],'int') || strpos($atrib[$i]['Type'],'tinyint') || strpos($atrib[$i]['Type'],'smallint') || strpos($atrib[$i]['Type'],'mediumint') || strpos($atrib[$i]['Type'],'bigint') || strpos($atrib[$i]['Type'],'float') || strpos($atrib[$i]['Type'],'decimal'))
+                    if(strpos($atrib[$i]['Type'],'int')!== FALSE || strpos($atrib[$i]['Type'],'tinyint')!== FALSE || strpos($atrib[$i]['Type'],'smallint')!== FALSE || strpos($atrib[$i]['Type'],'mediumint')!== FALSE || strpos($atrib[$i]['Type'],'bigint')!== FALSE || strpos($atrib[$i]['Type'],'float')!== FALSE || strpos($atrib[$i]['Type'],'decimal')!== FALSE)
                     {
                         ($updateValues=="")?($updateValues = $atrib[$i]['Field']."=\$this->".$atrib[$i]['Field']):($updateValues = $updateValues.",".$atrib[$i]['Field']."=\$this->".$atrib[$i]['Field']);
                     }
